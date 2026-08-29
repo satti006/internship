@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Day 2 - Responsive Dashboard with Dark Mode</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+    }
+  </script>
+
+  <!-- Anti-Flicker Script -->
+  <script>
+    if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  </script>
+</head>
+<body class="bg-gray-100 dark:bg-slate-900 font-sans antialiased text-gray-800 dark:text-gray-100 transition-colors duration-200">
+
+  <!-- Main Container -->
+  <div class="min-h-screen flex flex-col md:flex-row">
+
+    <!-- 1. SIDEBAR -->
+    <aside class="w-full md:w-20 lg:w-64 bg-slate-900 dark:bg-slate-950 text-white flex-shrink-0 transition-all border-r border-slate-800">
+      <div class="p-4 md:p-6 flex items-center justify-between md:justify-start">
+        <div class="flex items-center space-x-3">
+          <div class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center font-bold text-white">D2</div>
+          <span class="text-xl font-bold md:hidden lg:inline-block">Dashboard</span>
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <nav class="p-4 space-y-2">
+        <a href="#" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg bg-indigo-600 text-white font-medium">
+          <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 1 0 01-1 1h-3m-6 0a1 1 1 0 00-1-1v-4a1 1 1 0 011-1h2a1 1 1 0 011 1v4a1 1 1 0 001 1m-6 0h6"></path></svg>
+          <span class="md:hidden lg:inline-block">Overview</span>
+        </a>
+        <a href="#" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition">
+          <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+          <span class="md:hidden lg:inline-block">Analytics</span>
+        </a>
+      </nav>
+    </aside>
+
+    <!-- 2. MAIN CONTENT WRAPPER -->
+    <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+      
+      <!-- HEADER COMPONENT WITH THEME TOGGLE BUTTON -->
+      <header class="bg-white dark:bg-slate-800 border-b border-gray-200 dark:border-slate-700 px-4 sm:px-6 py-4 flex items-center justify-between transition-colors">
+        <h1 class="text-lg sm:text-xl font-bold text-gray-800 dark:text-white">Dashboard Overview</h1>
+        
+        <div class="flex items-center space-x-3 sm:space-x-4">
+          <!-- Dark Mode Toggle Button -->
+          <button id="theme-toggle" class="p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
+            <!-- Sun Icon (Visible in Dark Mode) -->
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 100 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+            <!-- Moon Icon (Visible in Light Mode) -->
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+          </button>
+
+          <input type="text" placeholder="Search..." class="hidden sm:block px-3 py-1.5 border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 w-36 md:w-64 placeholder-gray-400 dark:placeholder-gray-400" />
+          
+          <div class="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center font-semibold text-sm">
+            ZY
+          </div>
+        </div>
+      </header>
+
+      <!-- MAIN BODY CONTENT -->
+      <main class="p-4 sm:p-6 lg:p-8 flex-1 overflow-y-auto space-y-6">
+        
+        <!-- METRIC CARDS WITH DARK MODE STYLES -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+          
+          <div class="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-sm border border-gray-200 dark:border-slate-700 transition-colors">
+            <p class="text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-400">Total Revenue</p>
+            <h2 class="text-2xl font-extrabold text-gray-900 dark:text-white mt-2">$34,250</h2>
+            <span class="text-xs font-medium text-emerald-600 dark:text-emerald-400">+12% from last month</span>
+          </div>
+
+          <div class="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-sm border border-gray-200 dark:border-slate-700 transition-colors">
+            <p class="text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-400">Active Users</p>
+            <h2 class="text-2xl font-extrabold text-gray-900 dark:text-white mt-2">2,410</h2>
+            <span class="text-xs font-medium text-emerald-600 dark:text-emerald-400">+5.4% week over week</span>
+          </div>
+
+          <div class="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-sm border border-gray-200 dark:border-slate-700 transition-colors">
+            <p class="text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-400">Conversion Rate</p>
+            <h2 class="text-2xl font-extrabold text-gray-900 dark:text-white mt-2">4.12%</h2>
+            <span class="text-xs font-medium text-rose-500 dark:text-rose-400">-0.8% drop today</span>
+          </div>
+
+          <div class="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-sm border border-gray-200 dark:border-slate-700 transition-colors">
+            <p class="text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-400">Total Projects</p>
+            <h2 class="text-2xl font-extrabold text-gray-900 dark:text-white mt-2">18</h2>
+            <span class="text-xs font-medium text-indigo-600 dark:text-indigo-400">3 active sprints</span>
+          </div>
+
+        </section>
+
+        <!-- DATA TABLE WITH DARK MODE STYLES -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-200 dark:border-slate-700 overflow-hidden transition-colors">
+          <div class="p-4 sm:p-6 border-b border-gray-100 dark:border-slate-700 flex items-center justify-between">
+            <h3 class="text-base font-semibold text-gray-800 dark:text-white">Recent Transactions</h3>
+            <span class="text-xs text-gray-400 dark:text-gray-400">Updated 5 mins ago</span>
+          </div>
+          
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-gray-50 dark:bg-slate-700/50 text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider border-b border-gray-100 dark:border-slate-700">
+                  <th class="py-3 px-4 font-semibold">User</th>
+                  <th class="py-3 px-4 font-semibold">Status</th>
+                  <th class="py-3 px-4 font-semibold">Date</th>
+                  <th class="py-3 px-4 font-semibold text-right">Amount</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-100 dark:divide-slate-700 text-sm">
+                <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/30 transition">
+                  <td class="py-3 px-4 font-medium text-gray-900 dark:text-gray-200">Alex Johnson</td>
+                  <td class="py-3 px-4"><span class="px-2.5 py-1 text-xs rounded-full bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300 font-medium">Completed</span></td>
+                  <td class="py-3 px-4 text-gray-500 dark:text-gray-400">Jul 25, 2026</td>
+                  <td class="py-3 px-4 text-right font-medium text-gray-900 dark:text-gray-200">$250.00</td>
+                </tr>
+                <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/30 transition">
+                  <td class="py-3 px-4 font-medium text-gray-900 dark:text-gray-200">Sarah Connor</td>
+                  <td class="py-3 px-4"><span class="px-2.5 py-1 text-xs rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300 font-medium">Pending</span></td>
+                  <td class="py-3 px-4 text-gray-500 dark:text-gray-400">Jul 24, 2026</td>
+                  <td class="py-3 px-4 text-right font-medium text-gray-900 dark:text-gray-200">$120.00</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+      </main>
+
+    </div>
+
+  </div>
+
+  <!-- JavaScript for Toggle Functionality & Persistence -->
+  <script>
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const darkIcon = document.getElementById('theme-toggle-dark-icon');
+    const lightIcon = document.getElementById('theme-toggle-light-icon');
+
+    // Update icons based on current mode
+    function updateIcons() {
+      if (document.documentElement.classList.contains('dark')) {
+        lightIcon.classList.remove('hidden');
+        darkIcon.classList.add('hidden');
+      } else {
+        darkIcon.classList.remove('hidden');
+        lightIcon.classList.add('hidden');
+      }
+    }
+
+    // Run on initial load
+    updateIcons();
+
+    // Event Listener for Toggle Button
+    themeToggleBtn.addEventListener('click', function() {
+      if (document.documentElement.classList.contains('dark')) {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('theme', 'light');
+      } else {
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+      }
+      updateIcons();
+    });
+  </script>
+
+</body>
+</html>
